@@ -19,16 +19,28 @@
 
 // Create and Save a new Contact
 exports.create = async (req, res, next ) => {
-    if (!req.body?.name) {
+    if (!req.body?.username) {
         return next(new ApiError(400, "Name can not be empty"));
 
     }
 
     try {
         const contactService = new ContactService(MongoDB.client);
-        const document =await contactService.create(req.body);
-        return res.send(document);
+       // Tạo một tài liệu mới với các trường name, username và password
+        const exitstingUser =await contactService.findOne({ username: reg.body.username});
+        if (exitstingUser) {
+            res.send(" User already");
+        }else {
+            const document = await contactService.create({
+                username: reg.body.username,
+                password: reg.body.username,
+            });
+            return res.send(document);
+        }
+
+        
     } catch (error){
+        console.error(error);
         return next(
             new ApiError(500, "An error occurred while creating the contact")
         );
@@ -169,5 +181,21 @@ exports.findAllFavorite = async (_req, res, next) => {
     }
 };
 
+exports.checkLogin = async (reg, res, next) => {
+    try {
+        const contactService = new ContactService(MongoDB.client);
+        //Tìm người dựa trên trên
+        const user = await contactService.findOne({ username: reg.body.username});
+        //kiểm tra tài khoản có tồn tại và password có khớp
+        if (user && user.password === reg.body.password){
+            return res.status(200).send({ message: "Login thanh cong!"});
+        } else {
+            return res.status(401).send({ message: "Loi username hoac password"});
+        }
+    } catch (error) {
+        console.error("Loi trong checkLogin:", error);
+        return next(new ApiError(500, "Xay ra Loi khi CheckLogin"))
+    }
+};
 
 
