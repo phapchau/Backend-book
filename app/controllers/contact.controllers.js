@@ -1,8 +1,8 @@
 
-     const ApiError = require("../api-error");
-     const ContactService = require("../services/contact.service");
-     const MongoDB = require("../utils/mongodb.util");
-
+     
+    const ContactService = require("../services/contact.service");
+    const MongoDB = require("../utils/mongodb.util");
+    const ApiError = require("../api-error");
 
 
 
@@ -10,7 +10,33 @@
 // exports.create = (req, res) =>{
 //     res.send({ message: "create handler"});
 
+exports.create = (req, res) => {
+    res.send({ message: "create handler" });
+};
 
+exports.findAll = (req, res) => {
+    res.send({ message: "findAll handler" });
+};
+
+exports.findOne = (req, res) => {
+    res.send({ message: "findOne handler" });
+};
+
+exports.update = (req, res) => {
+    res.send({ message: "update handler" });
+};
+
+exports.delete = (req, res) => {
+    res.send({ message: "delete handler" });
+};
+
+exports.deleteAll = (req, res) => {
+    res.send({ message: "deleteAll handler" });
+};
+
+exports.findAllFavorite = (req, res) => {
+    res.send({ message: "findAllFavorite handler" });
+};
 
 // };
 
@@ -27,13 +53,13 @@ exports.create = async (req, res, next ) => {
     try {
         const contactService = new ContactService(MongoDB.client);
        // Tạo một tài liệu mới với các trường name, username và password
-        const exitstingUser =await contactService.findOne({ username: reg.body.username});
+        const exitstingUser = await contactService.findOne({ username: reg.body.username});
         if (exitstingUser) {
             res.send(" User already");
         }else {
             const document = await contactService.create({
                 username: reg.body.username,
-                password: reg.body.username,
+                password: reg.body.password
             });
             return res.send(document);
         }
@@ -68,7 +94,7 @@ exports.findAll = async (req, res, next) => {
         return next(
             new ApiError(500, "Am error occurred while retrieving contacts")
         );
-    }
+    };
     return res.send(documents);
 
 };
@@ -181,7 +207,7 @@ exports.findAllFavorite = async (_req, res, next) => {
     }
 };
 
-exports.checkLogin = async (reg, res, next) => {
+exports.checkLogIn = async (reg, res, next) => {
     try {
         const contactService = new ContactService(MongoDB.client);
         //Tìm người dựa trên trên

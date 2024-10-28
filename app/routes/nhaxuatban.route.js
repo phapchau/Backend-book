@@ -6,15 +6,15 @@ const router = express.Router();
 router.route("/")
     .get(nhaxuatban.findAll)
     .post(nhaxuatban.create)
-    .delete(nhaxuatban.deleteAll);
+    // .delete(nhaxuatban.deleteAll);
 
-router.route("/favorite")
-    .get(nhaxuatban.findAllFavorite);
+// router.route("/favorite")
+//     .get(nhaxuatban.findAllFavorite);
 
-router.route("/:id")
-    .get(nhaxuatban.findOne)
-    .put(nhaxuatban.update)
-    .delete(nhaxuatban.delete);
+// router.route("/:id")
+//     .get(nhaxuatban.findOne)
+//     .put(nhaxuatban.update)
+//     .delete(nhaxuatban.delete);
 
 module.exports = router;
 
