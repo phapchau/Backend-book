@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
 
-class ContactService {
+class NhanVienService {
     constructor(client){
         this.Contact = client.db().collection("nhanvien");
      
@@ -9,7 +9,7 @@ class ContactService {
     // Định nghĩa các phương thức truy xuất CSDL sử dụng mongodb API
     extractContactData(payload) {
         const contact = {
-             manv: payload.manv,
+            manv: payload.manv,
             hoten: payload.hoten,
             chucvu: payload.chucvu,
             diachi: payload.diachi,
@@ -78,14 +78,14 @@ class ContactService {
     }
 
     //
-    // async deleteAll(){
-    //     const result = await this.Contact.deleteMany({});
-    //     return result.deleteCount;
-    // }
+    async deleteAll(){
+        const result = await this.Contact.deleteMany({});
+        return result.deleteCount;
+    }
 
-    // async findOne(filter) {
-    //     return await this.Contact.findOne(filter);
-    // }
+    async findOne(filter) {
+        return await this.Contact.findOne(filter);
+    }
 }
 
-module.exports = ContactService;
+module.exports = NhanVienService;

@@ -9,7 +9,7 @@ class ContactService {
     // Định nghĩa các phương thức truy xuất CSDL sử dụng mongodb API
     extractContactData(payload) {
         const contact = {
-             manxb: payload.manxb,
+            manxb: payload.manxb,
             tennxb: payload.tennxb,
             diachi: payload.diachi,
         };

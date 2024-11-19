@@ -10,33 +10,33 @@
 // exports.create = (req, res) =>{
 //     res.send({ message: "create handler"});
 
-exports.create = (req, res) => {
-    res.send({ message: "create handler" });
-};
+// exports.create = (req, res) => {
+//     res.send({ message: "create handler" });
+// };
 
-exports.findAll = (req, res) => {
-    res.send({ message: "findAll handler" });
-};
+// exports.findAll = (req, res) => {
+//     res.send({ message: "findAll handler" });
+// };
 
-exports.findOne = (req, res) => {
-    res.send({ message: "findOne handler" });
-};
+// exports.findOne = (req, res) => {
+//     res.send({ message: "findOne handler" });
+// };
 
-exports.update = (req, res) => {
-    res.send({ message: "update handler" });
-};
+// exports.update = (req, res) => {
+//     res.send({ message: "update handler" });
+// };
 
-exports.delete = (req, res) => {
-    res.send({ message: "delete handler" });
-};
+// exports.delete = (req, res) => {
+//     res.send({ message: "delete handler" });
+// };
 
-exports.deleteAll = (req, res) => {
-    res.send({ message: "deleteAll handler" });
-};
+// exports.deleteAll = (req, res) => {
+//     res.send({ message: "deleteAll handler" });
+// };
 
-exports.findAllFavorite = (req, res) => {
-    res.send({ message: "findAllFavorite handler" });
-};
+// exports.findAllFavorite = (req, res) => {
+//     res.send({ message: "findAllFavorite handler" });
+// };
 
 // };
 
@@ -53,13 +53,20 @@ exports.create = async (req, res, next ) => {
     try {
         const contactService = new ContactService(MongoDB.client);
        // Tạo một tài liệu mới với các trường name, username và password
-        const exitstingUser = await contactService.findOne({ username: reg.body.username});
+        const exitstingUser = await contactService.findOne({ username: req.body.username});
         if (exitstingUser) {
             res.send(" User already");
         }else {
             const document = await contactService.create({
-                username: reg.body.username,
-                password: reg.body.password
+                username: req.body.username,
+                password: req.body.password,
+                ten: req.body.ten,
+                holot:req.body.holot,
+                ngaysinh: req.body.ngaysinh,
+                sex: req.body.sex,
+                diachi:req.body.diachi,
+                sdt:req.body.sdt,
+                nhanvien:req.body.nhanvien,
             });
             return res.send(document);
         }
@@ -123,7 +130,7 @@ exports.findOne = async (req, res, next) => {
 //     res.send({ message: "findOne handler"});
 // };
 
-// exports.update = (req, res) =>{
+// exports.update = (req, res) =>{reg
 //     res.send({ message: "update handler"});
 // };
 
@@ -207,13 +214,18 @@ exports.findAllFavorite = async (_req, res, next) => {
     }
 };
 
-exports.checkLogIn = async (reg, res, next) => {
+exports.checkLogIn = async (req, res, next) => {
     try {
+        const user = req.body;
+        const username = user.username
+        console.log(username)
         const contactService = new ContactService(MongoDB.client);
         //Tìm người dựa trên trên
-        const user = await contactService.findOne({ username: reg.body.username});
+        const exitUser = await contactService.find({username });
+        console.log("exit", exitUser)
+        console.log(exitUser[0].password, user.password)
         //kiểm tra tài khoản có tồn tại và password có khớp
-        if (user && user.password === reg.body.password){
+        if (exitUser[0].password === user.password){
             return res.status(200).send({ message: "Login thanh cong!"});
         } else {
             return res.status(401).send({ message: "Loi username hoac password"});

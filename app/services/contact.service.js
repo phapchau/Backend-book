@@ -2,18 +2,25 @@ const { ObjectId } = require("mongodb");
 
 class ContactService {
     constructor(client){
-        this.Contact = client.db().collection("contacts");
+        this.Contact = client.db().collection("account");
      
     }
 
     // Định nghĩa các phương thức truy xuất CSDL sử dụng mongodb API
     extractContactData(payload) {
         const contact = {
-            name: payload.name,
-            email:payload.email,
-            address: payload.address,
-            phone:payload.phone,
-            favorite: payload.favorite,
+            username: payload.username,
+            password:payload.password,
+            holot:payload.holot,
+            ten:payload.ten,
+            ngaysinh:payload.ngaysinh,
+            sex:payload.sex,
+            diachi:payload.diachi,
+            sdt:payload.sdt,
+            nhanvien:payload.nhanvien,
+            // address: payload.address,
+            // phone:payload.phone,
+            // favorite: payload.favorite,
         };
         //Remove undefined fields
         Object.keys(contact).forEach(
@@ -24,12 +31,10 @@ class ContactService {
 
     async create(payload) {
         const contact = this.extractContactData(payload);
-        const result = await this.Contact.findOneAndUpdate(
-            contact,
-            {$set: { favorite: contact.favorite === true}},
-            { returnDocument: "after", upsert: true }
-        );
-        return result;
+        const result = await this.Contact.insertOne(contact)
+        const insertedContact = await this.Contact.findOne({ _id: result.insertedId });
+
+        return insertedContact;
     }
     //
 
@@ -38,15 +43,37 @@ class ContactService {
         return await cursor.toArray();
     }
 
-    async findByName(name) {
-        return await this.find({
-            name: { $regex: new RegExp(new RegExp(name)), $option: { i }},
+    // async findByName(name) {
+    //     console.log("aaa",name)
+    //     // const nameStr = String(name);
+    //     // console.log(nameStr);
+    //     return await this.find({
+    //      uername:"thien"
+    //     });
+    // }
+async findByName(name) {
+    // try {
+    //     console.log("Searching for user:", username);
+        
+    //     // Adjust field name if needed
+    //     const result = await this.findOne({ username: username });
+        
+    //     console.log("Query result:", result);
+    //     return result;
+    // } catch (error) {
+    //     console.error("Error in findByName:", error);
+    //     throw error;
+    // }
+
+     return await this.find({
+            name: { $regex: new RegExp(new RegExp(name)), $options: "i" },
         });
-    }
+}
+
     //
 
     //
-    async findById(id) {
+    async findOne(id) {
         return await this.Contact.findOne({
             _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
         });

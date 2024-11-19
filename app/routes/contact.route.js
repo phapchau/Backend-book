@@ -20,7 +20,8 @@ router.route("/:id")
 router.route("/login")
     .put(contacts.checkLogIn);
 
-
+// router.route("/user/:username")
+//     .get(contacts.findByName)
     //
 // router.put('/path', (req, res) => {
 //   // Xử lý yêu cầu PUT tại đây

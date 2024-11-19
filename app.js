@@ -4,8 +4,12 @@ const cors =  require("cors");
 const contactsRouter = require("./app/routes/contact.route");
 const booksRouter = require("./app/routes/books.route");
 const nxbRouter = require("./app/routes/nhaxuatban.route");
+const theodoiRouter = require("./app/routes/theodoi.route");
 const nhanvienRouter = require("./app/routes/nhanvien.route");
+const docgiaRouter = require("./app/routes/docgia.route");
 const ApiError = require("./app/api-error.js");
+const path =require('path');
+
 
 const app = express();
 
@@ -14,16 +18,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.use('/api/uploads',express.static(path.join(__dirname, 'app/uploads')));
 app.use("/api/contacts", contactsRouter);
 app.use("/api/books", booksRouter);
 app.use("/api/nhaxuatban", nxbRouter);
 app.use("/api/nhanvien", nhanvienRouter);
+app.use("/api/theodoi", theodoiRouter);
+app.use("/api/docgia", docgiaRouter);
+// define error-handling middeware last, after other app.use() and router calls
 
-//define error-handling middeware last, after other app.use() and router calls
-
-app.get("/", (req, res) =>{
-    res.json({ message: "Welcome to contact book application."});
-});
 
 // handle 404 response
 app.use((req, res, next) =>{
@@ -32,6 +35,9 @@ app.use((req, res, next) =>{
     return next(new ApiError(404, "Resource not found"));
 });
 
+app.get("/", (req, res) =>{
+    res.json({ message: "Welcome to contact book application."});
+});
 
 
 
