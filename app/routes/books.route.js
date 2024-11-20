@@ -25,7 +25,7 @@ router.route("/:id")
 router.route("/uploadCover")
     .post(upload.single("avatar"), (req, res) => {
         try {
-            const coverPath = `app/uploads/${req.file.filename}` //path
+            const coverPath = `api/uploads/${req.file.filename}` //path
             console.log(coverPath);
             res.status(200).json({
                 message: "Upload ảnh thành công",

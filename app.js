@@ -18,7 +18,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/uploads',express.static(path.join(__dirname, 'app/uploads')));
+app.use('/api/uploads',express.static(path.join(__dirname, '/app/uploads')));
 app.use("/api/contacts", contactsRouter);
 app.use("/api/books", booksRouter);
 app.use("/api/nhaxuatban", nxbRouter);
